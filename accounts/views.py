@@ -83,7 +83,6 @@ def user_login(request):
 def delete_account(request):
     if request.method == 'POST':
         user = request.user
-        # optional: clean up profile media
         try:
             profile = user.userprofile
             if getattr(profile, 'profile_picture', None):
@@ -91,13 +90,11 @@ def delete_account(request):
         except Exception:
             pass
 
-        # log out first, then delete user
         logout(request)
         user.delete()
         messages.success(request, 'Your account has been deleted.')
         return redirect('home')
 
-    # Optional GET confirmation page if you want a standalone confirm screen
     return render(request, 'accounts/confirm_delete_account.html')
 
 
@@ -110,7 +107,6 @@ def user_logout(request):
 
 @login_required
 def user_profile(request):
-    # Get or create user profile with safe defaults
     user_profile, created = UserProfile.objects.get_or_create(
         user=request.user,
         defaults={
@@ -151,15 +147,12 @@ def user_profile(request):
         user_form = UserUpdateForm(instance=request.user)
         profile_form = UserProfileForm(instance=user_profile)
     
-    # Get user's bookings safely
     bookings = []
     try:
         from bookings.models import Booking
         bookings = Booking.objects.filter(user=request.user).order_by('-created_at')
     except ImportError:
         pass
-    
-    # Get owned fields if user is field owner
     owned_fields = []
     if user_profile.is_field_owner:
         try:
@@ -179,3 +172,93 @@ def user_profile(request):
     
     return render(request, 'accounts/user_profile.html', context)
 
+def forgot_password(request):
+    if request.user.is_authenticated:
+        messages.info(request, 'You are already logged in. You can change your password in your profile.')
+        return redirect('accounts:user_profile')
+    
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            
+            request.session['reset_username'] = username
+            request.session['reset_timestamp'] = timezone.now().isoformat()
+            
+            messages.success(request, f'Account found! You can now set a new password for {username}.')
+            return redirect('accounts:reset_password')
+    else:
+        form = ForgotPasswordForm()
+    
+    return render(request, 'accounts/forgot_password.html', {'form': form})
+
+def reset_password(request):
+    if request.user.is_authenticated:
+        messages.info(request, 'You are already logged in.')
+        return redirect('accounts:user_profile')
+    
+    username = request.session.get('reset_username')
+    reset_time = request.session.get('reset_timestamp')
+    
+    if not username or not reset_time:
+        messages.error(request, 'Session expired. Please start the password recovery process again.')
+        return redirect('accounts:forgot_password')
+    
+    try:
+        reset_timestamp = timezone.datetime.fromisoformat(reset_time.replace('Z', '+00:00'))
+        if timezone.now() - reset_timestamp > timezone.timedelta(minutes=15):
+            request.session.pop('reset_username', None)
+            request.session.pop('reset_timestamp', None)
+            messages.error(request, 'Password reset session expired. Please try again.')
+            return redirect('accounts:forgot_password')
+    except:
+        messages.error(request, 'Invalid session. Please start over.')
+        return redirect('accounts:forgot_password')
+    
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        messages.error(request, 'User account not found.')
+        return redirect('accounts:forgot_password')
+    
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data['new_password']
+            
+            user.set_password(new_password)
+            user.save()
+            
+            user_profile, created = UserProfile.objects.get_or_create(
+                user=user,
+                defaults={
+                    'age': 18,
+                    'gender': 'Male',
+                    'mobile': '',
+                    'address': '',
+                    'emergency_contact': '',
+                    'is_field_owner': False
+                }
+            )
+            
+            request.session.pop('reset_username', None)
+            request.session.pop('reset_timestamp', None)
+            
+            messages.success(request, 'Password updated successfully! You can now sign in with your new password.')
+            return redirect('accounts:login')
+    else:
+        form = ResetPasswordForm(initial={
+            'username': username,
+            'email': user.email
+        })
+    
+    return render(request, 'accounts/reset_password.html', {
+        'form': form,
+        'user': user
+    })
+
+def cancel_password_reset(request):
+    request.session.pop('reset_username', None)
+    request.session.pop('reset_timestamp', None)
+    messages.info(request, 'Password reset cancelled.')
+    return redirect('accounts:login')
