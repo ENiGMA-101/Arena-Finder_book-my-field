@@ -157,7 +157,19 @@
 
     <!-- Ultra Cool Footer -->
     <footer class="cool-footer">
-        <!-- Main Footer Content -->
+        <!-- Animated Background -->
+        <div class="footer-bg">
+            <div class="wave wave1"></div>
+            <div class="wave wave2"></div>
+            <div class="wave wave3"></div>
+            <div class="floating-elements">
+                <div class="float-ball ball1"></div>
+                <div class="float-ball ball2"></div>
+                <div class="float-ball ball3"></div>
+                <div class="float-ball ball4"></div>
+            </div>
+        </div>
+
         <div class="footer-content">
             <div class="container">
                 <div class="row">
@@ -172,13 +184,29 @@
                             </div>
                             <p class="brand-tagline">Where passion meets the pitch. Your gateway to incredible sports experiences.</p>
 
-                            <!-- Social Links with cool effects -->
                             <div class="social-container">
                                 <span class="social-label">Connect with us</span>
                                 <div class="social-links">
                                     <a href="https://github.com/ENiGMA-101/Arena-Finder-book-my-field-" target="_blank" class="social-link github">
                                         <i class="fab fa-github"></i>
                                         <span class="tooltip">GitHub</span>
+                                    </a>
+                                    <a href="#" class="social-link facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                        <span class="tooltip">Facebook</span>
+                                    </a>
+                                    <a href="#" class="social-link twitter">
+                                        <i class="fab fa-twitter"></i>
+                                        <span class="tooltip">Twitter</span>
+                                    </a>
+                                    <a href="#" class="social-link instagram">
+                                        <i class="fab fa-instagram"></i>
+                                        <span class="tooltip">Instagram</span>
+                                    </a>
+                                    <a href="#" class="social-link linkedin">
+                                        <i class="fab fa-linkedin-in"></i>
+                                        <span class="tooltip">LinkedIn</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -317,7 +345,9 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Custom Scripts -->
     <script>
+        // Scroll to top with rocket effect
         const scrollBtn = document.getElementById('scrollTopBtn');
 
         window.addEventListener('scroll', () => {
@@ -340,6 +370,7 @@
             }, 1000);
         });
 
+        // Auto-hide alerts
         document.addEventListener('DOMContentLoaded', () => {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
@@ -350,6 +381,7 @@
             });
         });
 
+        // Animate floating balls
         const balls = document.querySelectorAll('.float-ball');
         balls.forEach((ball, index) => {
             ball.style.animationDelay = `${index * 0.5}s`;
@@ -357,6 +389,7 @@
     </script>
 
     <style>
+        /* Enhanced Navigation */
         .navbar {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(30, 30, 30, 0.95)) !important;
             backdrop-filter: blur(15px);
@@ -399,6 +432,7 @@
             margin-top: 2px;
         }
 
+        /* Ultra Cool Footer Styles */
         .cool-footer {
             position: relative;
             background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
@@ -406,6 +440,7 @@
             margin-top: 80px;
         }
 
+        /* Animated Background */
         .footer-bg {
             position: absolute;
             top: 0;
@@ -443,6 +478,7 @@
             50% { transform: translateX(100px) rotate(2deg); }
         }
 
+        /* Floating Elements */
         .float-ball {
             position: absolute;
             border-radius: 50%;
@@ -461,6 +497,7 @@
             50% { transform: translateY(-20px) rotate(180deg); }
         }
 
+        /* Footer Content */
         .footer-content {
             position: relative;
             z-index: 2;
@@ -468,6 +505,7 @@
             color: #ffffff;
         }
 
+        /* Brand Section */
         .footer-brand {
             text-align: center;
         }
@@ -514,6 +552,7 @@
             line-height: 1.6;
         }
 
+        /* Social Links */
         .social-container {
             text-align: center;
         }
@@ -555,6 +594,11 @@
             transition: all 0.4s ease;
             z-index: -1;
         }
+
+        .social-link.facebook::before { background: linear-gradient(135deg, #3b5998, #4267B2); }
+        .social-link.twitter::before { background: linear-gradient(135deg, #1da1f2, #0d95e8); }
+        .social-link.instagram::before { background: linear-gradient(135deg, #e4405f, #fd1d1d, #fcb045); }
+        .social-link.linkedin::before { background: linear-gradient(135deg, #0077b5, #0e76a8); }
         .social-link.github::before { background: linear-gradient(135deg, #333, #24292e); }
 
         .social-link:hover {
@@ -582,6 +626,7 @@
             bottom: -30px;
         }
 
+        /* Footer Sections */
         .footer-section {
             margin-bottom: 30px;
         }
@@ -605,6 +650,7 @@
             border-radius: 2px;
         }
 
+        /* Footer Links */
         .footer-links {
             list-style: none;
             padding: 0;
@@ -641,6 +687,7 @@
             color: #00f2fe;
         }
 
+        /* Sports Links */
         .sports-links a {
             display: flex;
             align-items: center;
@@ -654,6 +701,7 @@
             padding-left: 15px;
         }
 
+        /* Contact Cards */
         .contact-cards {
             margin-bottom: 30px;
         }
@@ -704,6 +752,7 @@
             font-weight: 500;
         }
 
+        /* User Status Card */
         .user-status-card {
             background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1));
             border: 1px solid rgba(79, 172, 254, 0.3);
@@ -740,6 +789,7 @@
             color: white;
         }
 
+        /* Footer Bottom */
         .footer-bottom {
             background: rgba(0, 0, 0, 0.3);
             border-top: 1px solid rgba(79, 172, 254, 0.2);
@@ -824,6 +874,7 @@
             box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
         }
 
+        /* Floating Action Button */
         .floating-action {
             position: fixed;
             bottom: 30px;
@@ -888,6 +939,7 @@
             bottom: 75px;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .footer-content {
                 padding: 60px 0 30px;
