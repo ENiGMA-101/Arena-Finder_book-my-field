@@ -9,4 +9,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('profile/', views.user_profile, name='user_profile'),
     path('delete-account/', views.delete_account, name='delete_account'),
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+    path('reset-password/', views.reset_password, name='reset_password'),
+    path('cancel-reset/', views.cancel_password_reset, name='cancel_reset'),
 ]
