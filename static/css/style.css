@@ -293,3 +293,40 @@ body {
     border-radius: 10px;
     border-left: 4px solid #4facfe;
 }
+
+.time-slot {
+    background: white;
+    border: 2px solid #e3e6f0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.time-slot:hover {
+    border-color: #4facfe;
+    background: #f8f9fc;
+    transform: translateY(-2px);
+}
+
+.time-slot.selected {
+    border-color: #4facfe;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+}
+
+/* Review Styles */
+.review-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #4facfe;
+}
+
+.rating-stars {
+    color: #ffd700;
+    font-size: 1.2rem;
+}
