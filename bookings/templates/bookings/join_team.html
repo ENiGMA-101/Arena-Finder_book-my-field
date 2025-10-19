@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-
 {% block title %}Join Team{% endblock %}
-
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6">
@@ -23,7 +21,6 @@
                         <p><strong>Description:</strong> {{ team_formation.description }}</p>
                     {% endif %}
                 </div>
-
                 <form method="post" class="mt-4">
                     {% csrf_token %}
                     <div class="mb-3">
@@ -31,7 +28,6 @@
                         <textarea name="message" class="form-control" rows="4" 
                                   placeholder="Tell them why you'd like to join their team..."></textarea>
                     </div>
-
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-success btn-lg">
                             🎯 Send Join Request
