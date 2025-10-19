@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-
 {% block title %}Payment Successful{% endblock %}
-
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6">
@@ -10,10 +8,8 @@
                 <div class="success-icon mb-4">
                     <i class="fas fa-check-circle fa-5x text-success"></i>
                 </div>
-                
                 <h2 class="text-success mb-3">🎉 Payment Successful!</h2>
                 <p class="lead">Your booking has been confirmed!</p>
-                
                 <div class="payment-details mb-4">
                     <div class="detail-row">
                         <span>Transaction ID:</span>
@@ -28,7 +24,6 @@
                         <strong>${{ amount }}</strong>
                     </div>
                 </div>
-                
                 <div class="booking-info mb-4">
                     <h5>📋 Booking Information</h5>
                     <p><strong>Booking ID:</strong> #{{ booking.id }}</p>
@@ -36,7 +31,6 @@
                     <p><strong>Date:</strong> {{ booking.booking_date }}</p>
                     <p><strong>Time:</strong> {{ booking.time_slot.start_time }} - {{ booking.time_slot.end_time }}</p>
                 </div>
-                
                 <div class="action-buttons">
                     <a href="{% url 'bookings:booking_detail' booking.id %}" class="btn btn-primary btn-lg me-3">
                         📄 View Booking
@@ -49,44 +43,37 @@
         </div>
     </div>
 </div>
-
 <style>
 .success-card {
     border: none;
     border-radius: 15px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
-
 .success-icon {
     animation: bounce 1s ease-in-out;
 }
-
 @keyframes bounce {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
 }
-
 .payment-details {
     background: #f8f9fa;
     padding: 20px;
     border-radius: 10px;
     margin: 20px 0;
 }
-
 .detail-row {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
     padding: 5px 0;
 }
-
 .detail-row:last-child {
     border-top: 1px solid #ddd;
     padding-top: 15px;
     font-size: 1.1rem;
     font-weight: 600;
 }
-
 .booking-info {
     background: #e7f3ff;
     padding: 20px;
