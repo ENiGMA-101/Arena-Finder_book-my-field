@@ -257,4 +257,24 @@ body {
 .bg-danger {
     background: linear-gradient(135deg, #fd746c, #ff9068) !important;
 }
+/* Table Styles */
+.table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 
+.table thead th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 15px;
+}
+
+.table tbody td {
+    padding: 15px;
+    border: none;
+    border-bottom: 1px solid #e3e6f0;
+}
