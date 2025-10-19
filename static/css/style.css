@@ -1,3 +1,4 @@
+/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* Global Styles */
@@ -62,6 +63,7 @@ body {
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
 /* Card Styles */
 .card {
     border: none;
@@ -163,6 +165,7 @@ body {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     color: white;
 }
+
 /* Form Styles */
 .form-control {
     border: 2px solid #e3e6f0;
@@ -199,6 +202,7 @@ body {
     font-weight: 500;
     animation: slideIn 0.5s ease;
 }
+
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -233,6 +237,7 @@ body {
     color: #0c5460;
     border-left: 4px solid #17a2b8;
 }
+
 /* Badge Styles */
 .badge {
     border-radius: 20px;
@@ -256,6 +261,7 @@ body {
 .bg-danger {
     background: linear-gradient(135deg, #fd746c, #ff9068) !important;
 }
+
 /* Table Styles */
 .table {
     background: white;
@@ -330,6 +336,7 @@ body {
     color: #ffd700;
     font-size: 1.2rem;
 }
+
 /* Profile Styles */
 .profile-header {
     background: linear-gradient(135deg, #667eea, #764ba2);
@@ -374,6 +381,7 @@ body {
     background: #f8d7da;
     color: #721c24;
 }
+
 .status-completed {
     background: #d1ecf1;
     color: #0c5460;
@@ -445,6 +453,7 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
 /* Footer Styles */
 .footer {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8));
@@ -459,6 +468,7 @@ body {
     margin: 0;
     opacity: 0.8;
 }
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container-main {
@@ -504,6 +514,7 @@ body {
         padding: 15px;
     }
 }
+
 /* Utility Classes */
 .text-gradient {
     background: linear-gradient(135deg, #4facfe, #00f2fe);
@@ -539,6 +550,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #00f2fe, #4facfe);
 }
+
 /* Search Form Styles */
 .search-form {
     background: white;
@@ -632,6 +644,7 @@ body {
     background-clip: text;
     margin-bottom: 15px;
 }
+
 /* Field Cards on Homepage */
 .field-card {
     transition: all 0.3s ease;
