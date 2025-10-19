@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-
 {% block title %}Booking Details - {{ booking.field.name }}{% endblock %}
-
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
@@ -31,8 +29,6 @@
                         {% endif %}
                     </div>
                 </div>
-
-                <!-- Payment Section for Paid Fields -->
                 {% if booking.field.availability_type == 'Paid' and booking.status == 'Pending' %}
                     <div class="alert alert-warning mt-3">
                         <h6><i class="fas fa-credit-card me-2"></i>Payment Required</h6>
@@ -44,14 +40,12 @@
                         </div>
                     </div>
                 {% endif %}
-
                 {% if booking.special_requirements %}
                     <div class="mt-3">
                         <h6>📝 Special Requirements:</h6>
                         <p>{{ booking.special_requirements }}</p>
                     </div>
                 {% endif %}
-
                 <div class="d-grid gap-2 mt-4">
                     {% if booking.status == 'Confirmed' %}
                         <a href="{% url 'bookings:cancel_booking' booking.id %}"
@@ -68,7 +62,6 @@
         </div>
     </div>
 </div>
-
 <style>
 .booking-status {
     padding: 5px 15px;
@@ -76,22 +69,18 @@
     font-size: 0.9rem;
     font-weight: 600;
 }
-
 .status-pending {
     background: #fff3cd;
     color: #856404;
 }
-
 .status-confirmed {
     background: #d4edda;
     color: #155724;
 }
-
 .status-cancelled {
     background: #f8d7da;
     color: #721c24;
 }
-
 .status-completed {
     background: #d1ecf1;
     color: #0c5460;
