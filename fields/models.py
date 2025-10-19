@@ -34,6 +34,7 @@ class Field(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def get_90min_cost(self):
+        """Get cost for 90 minutes (1.5 hours)"""
         if self.availability_type == 'Free':
             return Decimal('0.00')
         return self.cost_per_hour * Decimal('1.5')
