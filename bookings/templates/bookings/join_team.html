@@ -24,7 +24,23 @@
                     {% endif %}
                 </div>
 
-                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="message" class="form-label">💬 Message to Team Leader</label>
+                        <textarea name="message" class="form-control" rows="4" 
+                                  placeholder="Tell them why you'd like to join their team..."></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            🎯 Send Join Request
+                        </button>
+                        <a href="{% url 'fields:field_detail' team_formation.booking.field.id %}" class="btn btn-secondary">
+                            ← Back to Field
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
