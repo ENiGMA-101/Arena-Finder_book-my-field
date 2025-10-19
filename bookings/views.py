@@ -28,7 +28,6 @@ def book_field(request, field_id):
     except ValueError:
         selected_date = today
 
-    # Get time slots with booking status
     time_slots = FieldTimeSlot.objects.filter(field=field, is_available=True)
     booked_slots = Booking.objects.filter(
         field=field,
@@ -48,7 +47,6 @@ def book_field(request, field_id):
         team_form = TeamFormationForm(request.POST)
 
         if booking_form.is_valid():
-            # Check if slot is still available
             slot_id = request.POST.get('time_slot')
             if slot_id and int(slot_id) in booked_slots:
                 messages.error(request, "This time slot is no longer available.")
