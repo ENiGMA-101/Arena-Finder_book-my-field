@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-
 {% block title %}Book {{ field.name }}{% endblock %}
-
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-10">
@@ -12,8 +10,6 @@
                 <small class="text-muted">You can book up to 7 days in advance</small>
             </div>
             <div class="card-body">
-
-                <!-- Date Selection for Preview -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5>📅 Select Date to View Available Slots</h5>
@@ -31,8 +27,6 @@
                         </form>
                     </div>
                 </div>
-
-                <!-- Time Slots Preview -->
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5>🕐 Available Time Slots for {{ selected_date }}</h5>
@@ -54,8 +48,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Booking Form -->
                 <form method="post" id="bookingForm">
                     {% csrf_token %}
                     <div class="row">
@@ -84,7 +76,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -101,13 +92,10 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label for="special_requirements" class="form-label">📝 Special Requirements</label>
                         {{ booking_form.special_requirements }}
                     </div>
-
-                    <!-- Team Formation Section -->
                     <div class="card mt-4">
                         <div class="card-header">
                             <h5>👥 Team Formation (Optional)</h5>
@@ -119,7 +107,6 @@
                                     🔍 I'm looking for players to join my team
                                 </label>
                             </div>
-
                             <div id="teamFormationFields" style="display: none;">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -142,8 +129,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Booking Summary -->
                     <div class="card mt-4">
                         <div class="card-header">
                             <h5>💰 Booking Summary</h5>
@@ -168,7 +153,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-primary btn-lg">
                             🎯 Confirm Booking
@@ -187,13 +171,10 @@
         </div>
     </div>
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Team formation toggle
     const lookingForPlayersCheckbox = document.querySelector('#{{ team_form.looking_for_players.id_for_label }}');
     const teamFormationFields = document.getElementById('teamFormationFields');
-
     if (lookingForPlayersCheckbox) {
         lookingForPlayersCheckbox.addEventListener('change', function() {
             if (this.checked) {
@@ -203,8 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Set date restrictions
     const dateInput = document.querySelector('input[name="booking_date"]');
     if (dateInput) {
         const today = '{{ today|date:"Y-m-d" }}';
@@ -212,8 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
         dateInput.setAttribute('min', today);
         dateInput.setAttribute('max', maxDate);
     }
-
-    // Auto-update when date changes in preview
     const previewDateInput = document.getElementById('date');
     if (previewDateInput) {
         previewDateInput.addEventListener('change', function() {
@@ -222,8 +199,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Form validation
     document.getElementById('bookingForm').addEventListener('submit', function(e) {
         const selectedSlot = document.querySelector('select[name="time_slot"]').value;
         if (!selectedSlot) {
@@ -231,15 +206,12 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Please select a time slot.');
             return false;
         }
-
-        // Disable submit button to prevent double submission
         const submitBtn = document.querySelector('button[type="submit"]');
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
     });
 });
 </script>
-
 <style>
 .time-slot-card {
     transition: all 0.3s ease;
