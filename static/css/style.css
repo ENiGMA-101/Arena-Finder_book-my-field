@@ -234,4 +234,27 @@ body {
     color: #0c5460;
     border-left: 4px solid #17a2b8;
 }
+/* Badge Styles */
+.badge {
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-weight: 500;
+    font-size: 0.75rem;
+}
+
+.bg-info {
+    background: linear-gradient(135deg, #4facfe, #00f2fe) !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #4ecdc4, #44a08d) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, #f093fb, #f5576c) !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #fd746c, #ff9068) !important;
+}
 
