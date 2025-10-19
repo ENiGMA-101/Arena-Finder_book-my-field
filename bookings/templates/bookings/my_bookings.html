@@ -1,13 +1,10 @@
 {% extends 'base.html' %}
-
 {% block title %}My Bookings{% endblock %}
-
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>📅 My Bookings</h2>
     <a href="{% url 'fields:fields' %}" class="btn btn-primary">+ New Booking</a>
 </div>
-
 <div class="row">
     {% for booking in bookings %}
         <div class="col-md-6 mb-4">
@@ -24,11 +21,9 @@
                     <p><strong>🕐 Time:</strong> {{ booking.time_slot.start_time }} - {{ booking.time_slot.end_time }}</p>
                     <p><strong>👥 Players:</strong> {{ booking.players_count }}</p>
                     <p><strong>💰 Cost:</strong> ${{ booking.total_cost }}</p>
-                    
                     {% if booking.emergency_contact_visible %}
                         <span class="badge bg-info">Emergency Contact Visible</span>
                     {% endif %}
-                    
                     <div class="d-flex gap-2 mt-3">
                         <a href="{% url 'bookings:booking_detail' booking.id %}" class="btn btn-info btn-sm">View Details</a>
                         {% if booking.status == 'Confirmed' %}
