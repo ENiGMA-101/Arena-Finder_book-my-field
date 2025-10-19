@@ -278,3 +278,18 @@ body {
     border-bottom: 1px solid #e3e6f0;
 }
 
+/* Field Detail Styles */
+.field-detail-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+.field-amenities {
+    background: #f8f9fc;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #4facfe;
+}
