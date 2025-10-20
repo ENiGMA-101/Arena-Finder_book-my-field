@@ -5,13 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import UserProfile
-from .forms import (
-    UserRegistrationForm, 
-    UserProfileForm, 
-    UserUpdateForm,
-    ForgotPasswordForm,
-    ResetPasswordForm
-)
+from .forms import UserRegistrationForm, UserProfileForm, UserUpdateForm, ForgotPasswordForm, ResetPasswordForm
 
 def register(request):
     if request.method == 'POST':
