@@ -16,8 +16,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Local apps
     'accounts',
     'fields',
     'bookings',
@@ -89,49 +87,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Email Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'noreply@turfbooking.com'
-
-# Session Settings
-SESSION_COOKIE_AGE = 86400
-SESSION_SAVE_EVERY_REQUEST = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-
-# Message Framework
-from django.contrib.messages import constants as messages
-MESSAGE_TAGS = {
-    messages.DEBUG: 'debug',
-    messages.INFO: 'info',
-    messages.SUCCESS: 'success',
-    messages.WARNING: 'warning',
-    messages.ERROR: 'danger',
-}
-
-# Auth URLs
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-
-# File Upload Settings
-FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
-
-# Booking Settings
-TURF_BOOKING_SETTINGS = {
-    'MAX_BOOKING_DAYS_ADVANCE': 7,
-    'DEFAULT_SLOT_DURATION_MINUTES': 90,
-    'MAX_IMAGES_PER_REVIEW': 5,
-    'BOOKING_CANCELLATION_HOURS': 24,
-    'AUTO_CONFIRM_FREE_FIELDS': True,
-}
-
-# Create directories
-MEDIA_DIR = BASE_DIR / 'media'
-if not MEDIA_DIR.exists():
-    MEDIA_DIR.mkdir(exist_ok=True)
-
-STATIC_DIR = BASE_DIR / 'static'
-if not STATIC_DIR.exists():
-    STATIC_DIR.mkdir(exist_ok=True)
