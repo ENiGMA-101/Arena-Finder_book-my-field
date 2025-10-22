@@ -44,6 +44,43 @@ def fields(request):
     return render(request, 'fields/fields.html', context)
 
 @login_required
+def add_field(request):
+    try:
+        user_profile = request.user.userprofile
+    except:
+        user_profile, created = UserProfile.objects.get_or_create(
+            user=request.user,
+            defaults={
+                'age': 18,
+                'gender': 'Male',
+                'is_field_owner': False
+            }
+        )
+
+    if not user_profile.is_field_owner:
+        messages.error(request, "You need to be a field owner to add fields.")
+        return redirect('accounts:user_profile')
+
+    if request.method == 'POST':
+        field_form = FieldForm(request.POST, request.FILES)
+
+        if field_form.is_valid():
+            field = field_form.save(commit=False)
+            field.owner = request.user
+            field.save()
+
+            create_default_time_slots(field)
+
+            messages.success(request, "Field added successfully with time slots!")
+            return redirect('fields:manage_fields')
+        else:
+            messages.error(request, "Please fix the errors below.")
+    else:
+        field_form = FieldForm()
+
+    return render(request, 'fields/add_field.html', {'field_form': field_form})
+
+@login_required
 def delete_field(request, field_id):
     field = get_object_or_404(Field, id=field_id, owner=request.user)
     if request.method == 'POST':
@@ -168,6 +205,144 @@ def delete_review(request, field_id):
         return redirect('fields:field_detail', field_id=field.id)
 
     return render(request, 'fields/confirm_delete_review.html', {'field': field})
+
+
+
+
+def field_detail(request, field_id):
+    field = get_object_or_404(Field, id=field_id, is_active=True)
+    time_slots = FieldTimeSlot.objects.filter(field=field, is_available=True)
+    reviews = Review.objects.filter(field=field).order_by('-created_at')
+    avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+
+    today = date.today()
+    available_dates = []
+
+    for i in range(8):
+        check_date = today + timedelta(days=i)
+
+        booked_slots = set()
+        try:
+            bookings = Booking.objects.filter(
+                field=field,
+                booking_date=check_date,
+                status__in=['Confirmed', 'Pending']
+            ).values_list('time_slot_id', flat=True)
+            booked_slots.update(bookings)
+        except ImportError:
+            pass
+
+        total_slots = time_slots.count()
+        available_slots = total_slots - len(booked_slots)
+
+        available_dates.append({
+            'date': check_date,
+            'available_slots': available_slots,
+            'total_slots': total_slots,
+            'is_fully_booked': available_slots == 0
+        })
+
+    team_formations = []
+    try:
+        team_formations = TeamFormation.objects.filter(
+            booking__field=field,
+            looking_for_players=True,
+            booking__booking_date__gte=date.today(),
+            booking__status='Confirmed'
+        )
+    except ImportError:
+        pass
+
+    context = {
+        'field': field,
+        'time_slots': time_slots,
+        'reviews': reviews,
+        'avg_rating': avg_rating,
+        'team_formations': team_formations,
+        'available_dates': available_dates,
+        'today': today,
+    }
+    return render(request, 'fields/field_detail.html', context)
+
+
+@login_required
+def manage_fields(request):
+    user_profile, created = request.user.userprofile, False
+    try:
+        user_profile = request.user.userprofile
+    except:
+        
+        user_profile, created = UserProfile.objects.get_or_create(
+            user=request.user,
+            defaults={
+                'age': 18,
+                'gender': 'Male',
+                'is_field_owner': False
+            }
+        )
+
+    if not user_profile.is_field_owner:
+        messages.error(request, "You need to be a field owner to access this page.")
+        return redirect('accounts:user_profile')
+
+    owned_fields = Field.objects.filter(owner=request.user)
+    return render(request, 'fields/manage_fields.html', {'owned_fields': owned_fields})
+
+
+
+
+
+def create_default_time_slots(field):
+    time_slots = [
+        (time(6, 0), time(7, 30)),  
+        (time(7, 30), time(9, 0)),  
+        (time(9, 0), time(10, 30)),  
+        (time(10, 30), time(12, 0)),  
+        (time(12, 0), time(13, 30)),  
+        (time(13, 30), time(15, 0)),  
+        (time(15, 0), time(16, 30)),  
+        (time(16, 30), time(18, 0)),  
+        (time(18, 0), time(19, 30)),  
+        (time(19, 30), time(21, 0)),  
+        (time(21, 0), time(22, 30)),  
+    ]
+
+    for start_time, end_time in time_slots:
+        FieldTimeSlot.objects.create(
+            field=field,
+            start_time=start_time,
+            end_time=end_time,
+            is_available=True
+        )
+
+
+@login_required
+def edit_field(request, field_id):
+    field = get_object_or_404(Field, id=field_id, owner=request.user)
+
+    if request.method == 'POST':
+        field_form = FieldForm(request.POST, request.FILES, instance=field)
+
+        if field_form.is_valid():
+            field_form.save()
+            messages.success(request, "Field updated successfully!")
+            return redirect('fields:manage_fields')
+    else:
+        field_form = FieldForm(instance=field)
+
+    return render(request, 'fields/edit_field.html', {'field_form': field_form, 'field': field})
+
+
+@login_required
+def manage_time_slots(request, field_id):
+    field = get_object_or_404(Field, id=field_id, owner=request.user)
+    time_slots = FieldTimeSlot.objects.filter(field=field).order_by('start_time')
+
+    context = {
+        'field': field,
+        'time_slots': time_slots,
+    }
+    return render(request, 'fields/manage_time_slots.html', context)
 
 def advanced_search(request):
     fields_list = Field.objects.filter(is_active=True)
@@ -294,178 +469,6 @@ def advanced_search(request):
     }
     return render(request, 'fields/advanced_search.html', context)
 
-
-def field_detail(request, field_id):
-    field = get_object_or_404(Field, id=field_id, is_active=True)
-    time_slots = FieldTimeSlot.objects.filter(field=field, is_available=True)
-    reviews = Review.objects.filter(field=field).order_by('-created_at')
-    avg_rating = reviews.aggregate(Avg('rating'))['rating__avg']
-
-    today = date.today()
-    available_dates = []
-
-    for i in range(8):
-        check_date = today + timedelta(days=i)
-
-        booked_slots = set()
-        try:
-            bookings = Booking.objects.filter(
-                field=field,
-                booking_date=check_date,
-                status__in=['Confirmed', 'Pending']
-            ).values_list('time_slot_id', flat=True)
-            booked_slots.update(bookings)
-        except ImportError:
-            pass
-
-        total_slots = time_slots.count()
-        available_slots = total_slots - len(booked_slots)
-
-        available_dates.append({
-            'date': check_date,
-            'available_slots': available_slots,
-            'total_slots': total_slots,
-            'is_fully_booked': available_slots == 0
-        })
-
-    team_formations = []
-    try:
-        team_formations = TeamFormation.objects.filter(
-            booking__field=field,
-            looking_for_players=True,
-            booking__booking_date__gte=date.today(),
-            booking__status='Confirmed'
-        )
-    except ImportError:
-        pass
-
-    context = {
-        'field': field,
-        'time_slots': time_slots,
-        'reviews': reviews,
-        'avg_rating': avg_rating,
-        'team_formations': team_formations,
-        'available_dates': available_dates,
-        'today': today,
-    }
-    return render(request, 'fields/field_detail.html', context)
-
-
-@login_required
-def manage_fields(request):
-    user_profile, created = request.user.userprofile, False
-    try:
-        user_profile = request.user.userprofile
-    except:
-        
-        user_profile, created = UserProfile.objects.get_or_create(
-            user=request.user,
-            defaults={
-                'age': 18,
-                'gender': 'Male',
-                'is_field_owner': False
-            }
-        )
-
-    if not user_profile.is_field_owner:
-        messages.error(request, "You need to be a field owner to access this page.")
-        return redirect('accounts:user_profile')
-
-    owned_fields = Field.objects.filter(owner=request.user)
-    return render(request, 'fields/manage_fields.html', {'owned_fields': owned_fields})
-
-
-@login_required
-def add_field(request):
-    try:
-        user_profile = request.user.userprofile
-    except:
-        user_profile, created = UserProfile.objects.get_or_create(
-            user=request.user,
-            defaults={
-                'age': 18,
-                'gender': 'Male',
-                'is_field_owner': False
-            }
-        )
-
-    if not user_profile.is_field_owner:
-        messages.error(request, "You need to be a field owner to add fields.")
-        return redirect('accounts:user_profile')
-
-    if request.method == 'POST':
-        field_form = FieldForm(request.POST, request.FILES)
-
-        if field_form.is_valid():
-            field = field_form.save(commit=False)
-            field.owner = request.user
-            field.save()
-
-            create_default_time_slots(field)
-
-            messages.success(request, "Field added successfully with time slots!")
-            return redirect('fields:manage_fields')
-        else:
-            messages.error(request, "Please fix the errors below.")
-    else:
-        field_form = FieldForm()
-
-    return render(request, 'fields/add_field.html', {'field_form': field_form})
-
-
-def create_default_time_slots(field):
-    time_slots = [
-        (time(6, 0), time(7, 30)),  # 6:00 AM - 7:30 AM
-        (time(7, 30), time(9, 0)),  # 7:30 AM - 9:00 AM
-        (time(9, 0), time(10, 30)),  # 9:00 AM - 10:30 AM
-        (time(10, 30), time(12, 0)),  # 10:30 AM - 12:00 PM
-        (time(12, 0), time(13, 30)),  # 12:00 PM - 1:30 PM
-        (time(13, 30), time(15, 0)),  # 1:30 PM - 3:00 PM
-        (time(15, 0), time(16, 30)),  # 3:00 PM - 4:30 PM
-        (time(16, 30), time(18, 0)),  # 4:30 PM - 6:00 PM
-        (time(18, 0), time(19, 30)),  # 6:00 PM - 7:30 PM
-        (time(19, 30), time(21, 0)),  # 7:30 PM - 9:00 PM
-        (time(21, 0), time(22, 30)),  # 9:00 PM - 10:30 PM
-    ]
-
-    for start_time, end_time in time_slots:
-        FieldTimeSlot.objects.create(
-            field=field,
-            start_time=start_time,
-            end_time=end_time,
-            is_available=True
-        )
-
-
-@login_required
-def edit_field(request, field_id):
-    field = get_object_or_404(Field, id=field_id, owner=request.user)
-
-    if request.method == 'POST':
-        field_form = FieldForm(request.POST, request.FILES, instance=field)
-
-        if field_form.is_valid():
-            field_form.save()
-            messages.success(request, "Field updated successfully!")
-            return redirect('fields:manage_fields')
-    else:
-        field_form = FieldForm(instance=field)
-
-    return render(request, 'fields/edit_field.html', {'field_form': field_form, 'field': field})
-
-
-@login_required
-def manage_time_slots(request, field_id):
-    field = get_object_or_404(Field, id=field_id, owner=request.user)
-    time_slots = FieldTimeSlot.objects.filter(field=field).order_by('start_time')
-
-    context = {
-        'field': field,
-        'time_slots': time_slots,
-    }
-    return render(request, 'fields/manage_time_slots.html', context)
-
-
 def search_fields(request):
     query = request.GET.get('q', '')
 
@@ -485,5 +488,6 @@ def search_fields(request):
         'query': query,
     }
     return render(request, 'fields/fields.html', context)
+
 
 
