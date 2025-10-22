@@ -8,7 +8,7 @@
 
 **A modern web application for finding and booking sports arenas and fields**
 
-[Demo](#) • [Features](#features) • [Installation](#installation) • [Contributing](#contributing)
+[Demo](#) • [Features](#-features) • [Installation](#installation) • [Contributing](#contributing)
 
 </div>
 
@@ -62,7 +62,17 @@ Arena Finder is a comprehensive platform designed to simplify the process of dis
 
 ## 📸 Screenshots
 
-> Add screenshots of your application here to showcase the UI/UX
+<img width="1271" height="632" alt="image" src="https://github.com/user-attachments/assets/105ff490-291f-4713-8d9e-d79b107adb62" />
+<img width="1271" height="632" alt="image" src="https://github.com/user-attachments/assets/06cf2e43-2ebe-41c8-b19e-a9bc88199ffd" />
+<img width="1271" height="632" alt="image" src="https://github.com/user-attachments/assets/35c90972-22d7-4769-9c29-4e9767a19289" />
+<img width="1262" height="1455" alt="image" src="https://github.com/user-attachments/assets/2d0649b3-470b-4499-a805-619cce2b88eb" />
+<img width="1271" height="632" alt="image" src="https://github.com/user-attachments/assets/e884280c-1584-4054-9667-134b3de9f17d" />
+<img width="1260" height="1626" alt="image" src="https://github.com/user-attachments/assets/e36bfbc4-23a6-4805-805b-dfd735c779d9" />
+<img width="1271" height="632" alt="image" src="https://github.com/user-attachments/assets/43bcff60-7f40-4554-85cc-b1df56392b4d" />
+<img width="1262" height="795" alt="image" src="https://github.com/user-attachments/assets/5353059f-1168-4088-a00c-5a944129d19b" />
+<img width="1260" height="546" alt="image" src="https://github.com/user-attachments/assets/3969c92f-e241-46ad-9122-1869a772a2c8" />
+<img width="1250" height="989" alt="image" src="https://github.com/user-attachments/assets/04e2a553-e666-42c4-87b6-5e7060bfb526" />
+<img width="1250" height="1121" alt="image" src="https://github.com/user-attachments/assets/56f0f8de-e38e-4319-81ed-4c99f2aa5177" />
 
 ## 🎯 Use Cases
 
