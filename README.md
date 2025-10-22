@@ -8,7 +8,7 @@
 
 **A modern web application for finding and booking sports arenas and fields**
 
-[Demo](#) • [Features](#-features) • [Installation](#installation) • [Contributing](#contributing)
+[Demo](#-Screenshots) • [Features](#-features) • [Installation](#installation) • [Contributing](#-contributing)
 
 </div>
 
